@@ -1,0 +1,83 @@
+captainVersion: 4
+services:
+    # postgres-backup-s3
+    $$cap_appname:
+        image: eeshugerman/postgres-backup-s3:$$cap_postgres-backup-s3_version
+        restart: always
+        environment:
+            SCHEDULE: $$cap_pgbackups_schedule
+            PASSPHRASE: $$cap_pgbackups_passphrase
+            S3_REGION: $$cap_pgbackups_s3_region
+            S3_ACCESS_KEY_ID: $$cap_pgbackups_s3_key
+            S3_SECRET_ACCESS_KEY: $$cap_pgbackups_s3_secret
+            S3_BUCKET: $$cap_pgbackups_s3_bucket
+            S3_PREFIX: $$cap_pgbackups_s3_prefix
+            POSTGRES_HOST: $$cap_pgbackups_pg_host
+            POSTGRES_DATABASE: $$cap_pgbackups_pg_dbname
+            POSTGRES_USER: $$cap_pgbackups_pg_user
+            POSTGRES_PASSWORD: $$cap_pgbackups_pg_password
+caproverOneClickApp:
+    variables:
+        - id: $$cap_postgres-backup-s3_version
+          label: Postgres Backup S3 Version
+          defaultValue: '13'
+          description: "Checkout their docker page for the valid tags https://hub.docker.com/r/eeshugerman/postgres-backup-s3/tags - Images are tagged by the major PostgreSQL version they support: 9, 10, 11, 12, or 13."
+          validRegex: /^([^\s^\/])+$/
+        - id: $$cap_pgbackups_s3_region
+          label: S3 Region
+          defaultValue: 'sa-east-1'
+          description: 'Region to store backups'
+        - id: $$cap_pgbackups_s3_key
+          label: S3 Access Key
+          defaultValue: ''
+          description: 'to store backups'
+        - id: $$cap_pgbackups_s3_secret
+          label: S3 Access Secret
+          defaultValue: ''
+          description: 'to store backups'
+        - id: $$cap_pgbackups_s3_bucket
+          label: S3 Bucket name
+          defaultValue: ''
+          description: 'to store backups'
+        - id: $$cap_pgbackups_s3_prefix
+          label: Backup filename prefix
+          defaultValue: ''
+          description: 'you backup files will be named PREFIX + backup date'
+        - id: $$cap_pgbackups_schedule
+          label: Backups schedule
+          defaultValue: '@weekly'
+          description: 'The SCHEDULE variable determines backup frequency. See go-cron schedules documentation here http://godoc.org/github.com/robfig/cron#hdr-Predefined_schedules'
+          validRegex: /^([^\s^\/])+$/
+        - id: $$cap_pgbackups_passphrase
+          label: Backups passphase
+          defaultValue: ''
+          description: 'If PASSPHRASE is provided, the backup will be encrypted using GPG.'
+        - id: $$cap_pgbackups_pg_host
+          label: Postgres Host
+          defaultValue: 'srv-captain--my-db'
+          description: 'host to backup from'
+        - id: $$cap_pgbackups_pg_dbname
+          label: Postgres Database name
+          defaultValue: 'my'
+          description: 'db to backup from'
+        - id: $$cap_pgbackups_pg_user
+          label: Postgres Username
+          defaultValue: 'postgres'
+          description: 'user to backup from'
+        - id: $$cap_pgbackups_pg_password
+          label: Postgres Password
+          defaultValue: ''
+          description: 'password to connect'
+        
+    instructions:
+        start: >-
+            This project provides Docker images to periodically back up a PostgreSQL database to AWS S3, and to restore from the backup as needed.
+        end: >-
+            Aaaand you're done! 😄
+            Run docker exec <container name> sh backup.sh to trigger a backup ad-hoc
+
+    displayName: ''
+    isOfficial: true
+    baseUrl: https://hub.docker.com/r/eeshugerman/postgres-backup-s3/
+    description: This project provides Docker images to periodically back up a PostgreSQL database to AWS S3, and to restore from the backup as needed.
+    documentation: Taken from https://hub.docker.com/r/eeshugerman/postgres-backup-s3/
