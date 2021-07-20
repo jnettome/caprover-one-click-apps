@@ -3,6 +3,7 @@
 ![Validate One Click Apps](https://github.com/awesomehubio/caprover-one-click-apps/actions/workflows/validate_apps.yml/badge.svg?event=push)
 ![Publish One Click Apps](https://github.com/awesomehubio/caprover-one-click-apps/actions/workflows/deploy.yml/badge.svg?event=push)
 
+
 ### How to add this repo:
 
 -   Login to your CapRover dashboard
